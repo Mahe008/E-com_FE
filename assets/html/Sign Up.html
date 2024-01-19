@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgb(104, 212, 212) 20%, rgba(137, 43, 226, 0.76), rgb(173, 88, 173) 80%)no-repeat fixed;
+        }
+
+        .container>h1 {
+            color: mediumseagreen;
+            padding-bottom: 20px;
+        }
+
+        .container {
+            border: 1px solid black;
+            width: 350px;
+            padding: 40px 40px 40px 50px;
+            margin: 7vh auto;
+            background-color: rgba(0, 0, 0, 0.11);
+        }
+
+        .container form {
+            padding: 0 25px 0 0;
+        }
+
+        .input-grp input {
+            border: none;
+            border-bottom: 1px solid black;
+            width: 95%;
+            font-size: 20px;
+            padding: 5px 5px 5px 25px;
+            background: transparent;
+        }
+
+        .container input:focus {
+            outline: none;
+        }
+
+        span {
+            display: inline-block;
+            padding: 15px 0;
+        }
+
+        .container button {
+            width: 104%;
+            padding: 10px;
+            margin: 15px 0 0 0;
+            background-color: mediumseagreen;
+            border: none;
+            color: whitesmoke;
+            font-size: large;
+            cursor: pointer;
+        }
+
+        .login {
+            display: inline-block;
+            padding-left: 40px;
+        }
+
+        #fName,
+        #lName {
+            background: url("../images/person_FILL0_wght400_GRAD0_opsz24.png")no-repeat left;
+            background-size: 20px;
+        }
+
+        #eMail {
+            background: url("../images/mail_FILL0_wght400_GRAD0_opsz24.png")no-repeat left;
+            background-size: 20px;
+        }
+
+        #pass,
+        #cPass {
+            background: url("../images/lock_FILL0_wght400_GRAD0_opsz24\ \(1\).png")no-repeat left;
+            background-size: 20px;
+        }
+
+        .error-placeholder::placeholder {
+            color: red !important;
+            font-size: medium;
+        }
+
+        #agree {
+            color: red;
+            font-size: 14px;
+            padding: 0px;
+        }
+
+        #back {
+            text-decoration: none;
+            padding: 30px 0 30px 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="container">
+            <h1><i class="bi bi-pen-fill" style="font-size: 25px;"></i> Create An Account</h1>
+            <form action="" method="">
+                <div class="input-grp">
+                    <input type="text" id="fName" placeholder="First Name">
+                </div>
+                <div class="input-grp">
+                    <input type="text" id="lName" placeholder="Last Name">
+                </div>
+                <div class="input-grp">
+                    <input type="text" id="eMail" placeholder="Email">
+                </div>
+                <div class="input-grp">
+                    <input type="password" id="pass" placeholder="Password">
+                </div>
+                <div class="input-grp">
+                    <input type="password" id="cPass" placeholder="Confirm Password">
+                </div>
+                <span>
+                    <label>
+                        <input type="checkbox" id="terms"> I agree to the
+                    </label>
+                    <a href="#">Terms and Conditions</a>
+                    <span id="agree"></span>
+                </span>
+                <button type="submit">CREATE ACCOUNT</button>
+            </form>
+            <span class="login">
+                Already have an account?<a href="./login.html"> login</a>
+            </span>
+        </div>
+        <a href="../../ecom.html" id="back">back to home page</a>
+    </div>
+
+    <script>
+        const fName = document.getElementById("fName");
+        const lName = document.getElementById("lName");
+        const eMail = document.getElementById("eMail");
+        const pass = document.getElementById("pass");
+        const cPass = document.getElementById("cPass");
+        const form = document.querySelector("form");
+        const terms = document.getElementById("terms");
+        const agree = document.getElementById("agree");
+
+        form.addEventListener("submit", (e) => {
+            let passVal = pass.value;
+            let cPassVal = cPass.value;
+            let eMailVal = eMail.value;
+            let fNameVal = fName.value;
+            if (!terms.checked || !verifyInputs()) {
+                e.preventDefault();
+                agree.textContent = "kindly read the terms & conditions and tick the check box"
+            } if (terms.checked) {
+                agree.textContent = "";
+            } if (fNameVal.length >= 1 && fNameVal.length < 3) {
+                agree.textContent = "Entered First Name is Invalid"
+            } if (eMailVal !== "" && !validateEmail(eMailVal)) {
+                agree.textContent = "please enter valid email Id"
+            } if ((passVal.length >= 1 && passVal.length < 8)) {
+                agree.textContent = "password should contain minimum 8 characters"
+            } if (cPassVal !== "" && cPassVal !== passVal) {
+                agree.textContent = "password is incorrect";
+            } if (cPassVal.length >= 1 && cPassVal.length < 8) {
+                agree.textContent = "password should contain minimum 8 characters"
+            }
+        });
+        function verifyInputs() {
+            let fNameVal = fName.value;
+            let lNameVal = lName.value;
+            let eMailVal = eMail.value;
+            let passVal = pass.value;
+            let cPassVal = cPass.value;
+            let errSuccess = true;
+            if (fNameVal.length < 1) {
+                errSuccess = false;
+                setError(fName, "First Name is required")
+            } else {
+                setSuccess(fName)
+            }
+            if (lNameVal === "") {
+                errSuccess = false;
+                setError(lName, "Last name is required")
+            } else {
+                setSuccess(lName)
+            }
+            if (eMailVal === "") {
+                errSuccess = false;
+                setError(eMail, "Email is required")
+            } else {
+                setSuccess(eMail)
+            }
+            if (passVal.length < 1) {
+                errSuccess = false;
+                setError(pass, "password is required")
+            } else {
+                setSuccess(pass)
+            }
+            if (cPassVal.length < 1) {
+                errSuccess = false;
+                setError(cPass, "password is required")
+            } else {
+                setSuccess(cPass)
+            }
+            return errSuccess;
+        }
+
+        function setError(element, errMsg) {
+            const inputGrp = element.parentElement;
+            errInput = inputGrp.querySelector("input");
+            console.log(errInput)
+            errInput.classList.add("error-placeholder");
+            errInput.setAttribute("placeholder", errMsg);
+        }
+
+        function setSuccess(element) {
+            const inputGrp = element.parentElement;
+            errInput = inputGrp.querySelector("input");
+            errInput.classList.remove("error-placeholder");
+        }
+
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+        };
+    </script>
+</body>
+
+</html>
